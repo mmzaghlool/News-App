@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {SafeAreaView, StatusBar, StyleSheet, useColorScheme, Text, FlatList, Alert} from 'react-native';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import Colors from '../../configs/Colors';
@@ -14,7 +14,7 @@ const News = () => {
   const [loading, execute, data] = useFetch();
   const results = data?.results || [];
 
-  useEffect(() => {
+  const loadData = useCallback(() => {
     let url = API_URL.concat('&language=en');
     if (search) {
       url = url.concat(`&q=${search}`);
@@ -25,6 +25,10 @@ const News = () => {
       Alert.alert('Something went wrong', 'Please try again later', [{text: 'ok'}]);
     });
   }, [execute, search]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -39,6 +43,8 @@ const News = () => {
           data={results}
           renderItem={({item}) => <NewsCard item={item} />}
           style={styles.content}
+          onRefresh={() => loadData()}
+          refreshing={loading}
           ListHeaderComponent={() => <Text style={styles.header}>Latest News</Text>}
           ListEmptyComponent={() => <EmptyNews />}
         />
