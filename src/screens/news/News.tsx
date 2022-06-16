@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView, StatusBar, StyleSheet, useColorScheme, Text, FlatList, Alert} from 'react-native';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import Colors from '../../configs/Colors';
@@ -6,24 +6,30 @@ import {API_URL} from '../../configs/Constants';
 import useFetch from '../../hooks/useFetch';
 import EmptyNews from './EmptyNews';
 import NewsCard from './NewsCard';
+import SearchHeader from './SearchHeader';
 
 const News = () => {
   const isDarkMode = useColorScheme() === 'dark';
+  const [search, setSearch] = useState('');
   const [loading, execute, data] = useFetch();
   const results = data?.results || [];
 
-  console.log(results);
-
   useEffect(() => {
-    execute({url: API_URL}).catch(err => {
+    let url = API_URL.concat('&language=en');
+    if (search) {
+      url = url.concat(`&q=${search}`);
+    }
+
+    execute({url}).catch(err => {
       console.log(err);
       Alert.alert('Something went wrong', 'Please try again later', [{text: 'ok'}]);
     });
-  }, [execute]);
+  }, [execute, search]);
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <SearchHeader setSearch={setSearch} />
 
       {/* Content list */}
       {loading ? (
@@ -51,7 +57,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 24,
-    marginBottom: 8,
+    marginVertical: 8,
     fontWeight: '500',
   },
 });

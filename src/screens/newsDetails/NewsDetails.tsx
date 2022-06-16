@@ -11,7 +11,6 @@ type P = NativeStackScreenProps<RootStackParamList, 'NewsDetails'>;
 const NewsDetails: React.FC<P> = ({route}) => {
   const isDarkMode = useColorScheme() === 'dark';
   const {item} = route.params;
-  console.log(item);
 
   const {image_url, title, source_id, link, pubDate, description, full_description, keywords} = item;
 
