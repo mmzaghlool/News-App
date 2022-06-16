@@ -1,29 +1,20 @@
 import React from 'react';
 import moment from 'moment';
 import {StyleSheet, TouchableOpacity, View, Image, Text} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import Item from '../../types/Item';
+import {RootStackParamList} from '../../../App';
 
 type P = {
-  item: {
-    title: string;
-    link: string;
-    keywords: string[];
-    creator: null;
-    description: string;
-    content: null;
-    pubDate: string;
-    full_description: string;
-    image_url: string;
-    source_id: string;
-    country: string[];
-    category: string[];
-    language: string;
-  };
+  item: Item;
 };
 const NewsCard: React.FC<P> = ({item}) => {
   const {title, image_url, pubDate} = item;
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('NewsDetails', {item})}>
       <Image style={styles.image} source={{uri: image_url}} />
 
       <View style={styles.content}>
