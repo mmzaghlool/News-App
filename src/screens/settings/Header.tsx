@@ -1,12 +1,13 @@
 import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
+import Localization from '../../configs/Localization';
 
 type P = {};
 
 const Header: React.FC<P> = ({}) => {
   return (
     <View style={styles.header}>
-      <Text style={styles.text}>Settings</Text>
+      <Text style={styles.text}>{Localization.settings}</Text>
     </View>
   );
 };

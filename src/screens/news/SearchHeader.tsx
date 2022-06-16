@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, TextInput} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Colors from '../../configs/Colors';
+import Localization from '../../configs/Localization';
 
 type P = {
   setSearch: React.Dispatch<React.SetStateAction<string>>;
@@ -24,7 +25,7 @@ const SearchHeader: React.FC<P> = ({setSearch}) => {
       <View style={styles.inputContainer}>
         <MaterialIcons name="search" size={20} />
         <TextInput
-          placeholder="Search"
+          placeholder={Localization.search}
           style={styles.input}
           selectionColor={Colors.primary}
           value={query}

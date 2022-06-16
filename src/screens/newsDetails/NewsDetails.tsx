@@ -5,6 +5,7 @@ import moment from 'moment';
 import {RootStackParamList} from '../../../App';
 import Header from './Header';
 import Colors from '../../configs/Colors';
+import Localization from '../../configs/Localization';
 
 type P = NativeStackScreenProps<RootStackParamList, 'NewsDetails'>;
 
@@ -31,11 +32,11 @@ const NewsDetails: React.FC<P> = ({route}) => {
           </View>
 
           {/* Date & time */}
-          <Text style={styles.lightText}>{moment(pubDate).format('llll')}</Text>
+          <Text style={styles.lightText}>{moment(pubDate).locale(Localization.getLanguage()).format('llll')}</Text>
 
           {/* Source */}
           <Text style={styles.text}>
-            Source: <Text style={styles.bold}>{source_id}</Text>
+            {Localization.source}: <Text style={styles.bold}>{source_id}</Text>
           </Text>
 
           {/* Description */}

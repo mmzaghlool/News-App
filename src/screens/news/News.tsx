@@ -3,6 +3,7 @@ import {SafeAreaView, StatusBar, StyleSheet, useColorScheme, Text, FlatList, Ale
 import LoadingIndicator from '../../components/LoadingIndicator';
 import Colors from '../../configs/Colors';
 import {API_URL} from '../../configs/Constants';
+import Localization from '../../configs/Localization';
 import useFetch from '../../hooks/useFetch';
 import EmptyNews from './EmptyNews';
 import NewsCard from './NewsCard';
@@ -15,13 +16,12 @@ const News = () => {
   const results = data?.results || [];
 
   const loadData = useCallback(() => {
-    let url = API_URL.concat('&language=en');
+    let url = API_URL.concat(`&language=${Localization.getLanguage()}`);
     if (search) {
       url = url.concat(`&q=${search}`);
     }
 
-    execute({url}).catch(err => {
-      console.log(err);
+    execute({url}).catch(() => {
       Alert.alert('Something went wrong', 'Please try again later', [{text: 'ok'}]);
     });
   }, [execute, search]);
@@ -45,7 +45,7 @@ const News = () => {
           style={styles.content}
           onRefresh={() => loadData()}
           refreshing={loading}
-          ListHeaderComponent={() => <Text style={styles.header}>Latest News</Text>}
+          ListHeaderComponent={() => <Text style={styles.header}>{Localization.latestNews}</Text>}
           ListEmptyComponent={() => <EmptyNews />}
         />
       )}

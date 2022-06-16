@@ -5,6 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import Item from '../../types/Item';
 import {RootStackParamList} from '../../../App';
+import Localization from '../../configs/Localization';
 
 type P = {
   item: Item;
@@ -21,7 +22,7 @@ const NewsCard: React.FC<P> = ({item}) => {
         <Text numberOfLines={2} style={styles.title}>
           {title}
         </Text>
-        <Text style={styles.time}>{moment(pubDate).fromNow()}</Text>
+        <Text style={styles.time}>{moment(pubDate).locale(Localization.getLanguage()).fromNow()}</Text>
       </View>
     </TouchableOpacity>
   );
