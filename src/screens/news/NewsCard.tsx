@@ -15,7 +15,7 @@ const NewsCard: React.FC<P> = ({item}) => {
 
   return (
     <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('NewsDetails', {item})}>
-      <Image style={styles.image} source={{uri: image_url}} />
+      {image_url !== null ? <Image style={styles.image} source={{uri: image_url}} /> : <View />}
 
       <View style={styles.content}>
         <Text numberOfLines={2} style={styles.title}>
