@@ -11,6 +11,8 @@ type P = NativeStackScreenProps<RootStackParamList, 'NewsDetails'>;
 const NewsDetails: React.FC<P> = ({route}) => {
   const isDarkMode = useColorScheme() === 'dark';
   const {item} = route.params;
+  console.log(item);
+
   const {image_url, title, source_id, link, pubDate, description, full_description, keywords} = item;
 
   return (
@@ -21,7 +23,7 @@ const NewsDetails: React.FC<P> = ({route}) => {
       <Header link={link} />
 
       <ScrollView>
-        <Image source={{uri: image_url}} style={styles.image} />
+        {image_url !== null ? <Image style={styles.image} source={{uri: image_url}} /> : <View />}
 
         <View style={styles.content}>
           {/* title */}
