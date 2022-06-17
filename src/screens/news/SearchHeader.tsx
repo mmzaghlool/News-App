@@ -36,6 +36,7 @@ const SearchHeader: React.FC<P> = ({setSearch}) => {
           placeholderTextColor={colors.text}
           value={query}
           onChangeText={t => setQuery(t)}
+          underlineColorAndroid="transparent"
         />
       </View>
     </View>
@@ -60,11 +61,13 @@ const _styles = (colors: ThemeState) =>
       padding: 8,
       borderRadius: 8,
       width: '100%',
+      alignItems: 'center',
     },
     input: {
       marginLeft: 4,
-      backgroundColor: 'transparent',
       color: colors.text,
+      flex: 1,
+      padding: 0,
     },
   });
 
