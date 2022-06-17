@@ -6,6 +6,9 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import Item from '../../types/Item';
 import {RootStackParamList} from '../../../App';
 import Localization from '../../configs/Localization';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../redux/store';
+import {ThemeState} from '../../redux/slices/themeSlice';
 
 type P = {
   item: Item;
@@ -13,6 +16,8 @@ type P = {
 const NewsCard: React.FC<P> = ({item}) => {
   const {title, image_url, pubDate} = item;
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const colors = useSelector((state: RootState) => state.colors);
+  const styles = _styles(colors);
 
   return (
     <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('NewsDetails', {item})}>
@@ -28,38 +33,40 @@ const NewsCard: React.FC<P> = ({item}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    width: '96%',
-    height: 100,
-    backgroundColor: '#fff',
-    flexDirection: 'row',
-    marginVertical: 16,
-    borderRadius: 16,
-    marginLeft: 16,
-  },
-  image: {
-    width: 100,
-    height: 100,
-    borderRadius: 16,
-    marginLeft: -16,
-    marginTop: -16,
-  },
-  content: {
-    flex: 1,
-    height: '100%',
-    padding: 16,
-    alignSelf: 'center',
-  },
-  title: {
-    fontWeight: '500',
-    fontSize: 16,
-    flex: 1,
-  },
-  time: {
-    fontWeight: '300',
-    color: '#575757',
-  },
-});
+const _styles = (colors: ThemeState) =>
+  StyleSheet.create({
+    container: {
+      width: '96%',
+      height: 100,
+      backgroundColor: colors.neutral,
+      flexDirection: 'row',
+      marginVertical: 16,
+      borderRadius: 16,
+      marginLeft: 16,
+    },
+    image: {
+      width: 100,
+      height: 100,
+      borderRadius: 16,
+      marginLeft: -16,
+      marginTop: -16,
+    },
+    content: {
+      flex: 1,
+      height: '100%',
+      padding: 16,
+      alignSelf: 'center',
+    },
+    title: {
+      fontWeight: '500',
+      fontSize: 16,
+      flex: 1,
+      color: colors.text,
+    },
+    time: {
+      fontWeight: '300',
+      color: colors.lightText,
+    },
+  });
 
 export default NewsCard;

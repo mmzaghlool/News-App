@@ -8,11 +8,14 @@ import News from './src/screens/news/News';
 import NewsDetails from './src/screens/newsDetails/NewsDetails';
 import Item from './src/types/Item';
 import Settings from './src/screens/settings/Settings';
-import Colors from './src/configs/Colors';
 import Localization from './src/configs/Localization';
 import {initializeFRMoment} from './src/configs/Moment';
 import Language from './src/configs/asyncStorage/Language';
 import LoadingIndicator from './src/components/LoadingIndicator';
+import DarkMode from './src/configs/asyncStorage/DarkMode';
+import {useDispatch, useSelector} from 'react-redux';
+import {changeMode} from './src/redux/slices/themeSlice';
+import {RootState} from './src/redux/store';
 
 export type RootStackParamList = {
   Feed: undefined;
@@ -31,22 +34,42 @@ const HomeStack = () => (
 
 const App = () => {
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+
+  const colors = useSelector((state: RootState) => state.colors);
+
   useEffect(() => {
     async function updateLanguage() {
       const lang = await Language.getLanguage();
       Localization.setLanguage(lang ?? 'en');
       setLoading(false);
     }
+    async function updateDarkMode() {
+      const isDark = await DarkMode.getDarkMode();
+      dispatch(changeMode(JSON.parse(isDark || 'false')));
+    }
+    updateDarkMode();
     initializeFRMoment();
     updateLanguage();
-  }, []);
+  }, [dispatch]);
 
   if (loading) {
     return <LoadingIndicator />;
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      theme={{
+        colors: {
+          background: colors.backgroundColor,
+          border: colors.backgroundColor,
+          card: colors.neutral,
+          text: colors.text,
+          notification: colors.text,
+          primary: colors.primary,
+        },
+        dark: colors.isDarkMode,
+      }}>
       <Tab.Navigator
         screenOptions={({route}) => ({
           title: route.name === 'News' ? Localization.news : Localization.settings,
@@ -61,8 +84,6 @@ const App = () => {
 
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: Colors.primary,
-          tabBarInactiveTintColor: 'gray',
         })}>
         <Tab.Screen options={{headerShown: false}} name="News" component={HomeStack} />
         <Tab.Screen options={{headerShown: false}} name="Settings" component={Settings} />

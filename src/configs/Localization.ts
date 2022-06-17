@@ -15,6 +15,7 @@ let Localization = new LocalizedStrings({
     noNewsAvailable: 'No news available',
     search: 'Search',
     source: 'Source',
+    darkMode: 'Dark Mode',
   },
   fr: {
     language: 'Langue',
@@ -29,6 +30,7 @@ let Localization = new LocalizedStrings({
     noNewsAvailable: 'Aucune actualité disponible',
     search: 'Chercher',
     source: 'La source',
+    darkMode: 'Mode sombre',
   },
 });
 

@@ -1,19 +1,23 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {SafeAreaView, StatusBar, StyleSheet, useColorScheme, Text, FlatList, Alert} from 'react-native';
+import {SafeAreaView, StatusBar, StyleSheet, Text, FlatList, Alert} from 'react-native';
+import {useSelector} from 'react-redux';
 import LoadingIndicator from '../../components/LoadingIndicator';
-import Colors from '../../configs/Colors';
 import {API_URL} from '../../configs/Constants';
 import Localization from '../../configs/Localization';
 import useFetch from '../../hooks/useFetch';
+import {ThemeState} from '../../redux/slices/themeSlice';
+import {RootState} from '../../redux/store';
 import EmptyNews from './EmptyNews';
 import NewsCard from './NewsCard';
 import SearchHeader from './SearchHeader';
 
 const News = () => {
-  const isDarkMode = useColorScheme() === 'dark';
   const [search, setSearch] = useState('');
   const [loading, execute, data] = useFetch();
   const results = data?.results || [];
+
+  const colors = useSelector((state: RootState) => state.colors);
+  const styles = _styles(colors);
 
   const loadData = useCallback(() => {
     let url = API_URL.concat(`&language=${Localization.getLanguage()}`);
@@ -32,7 +36,7 @@ const News = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <StatusBar barStyle={colors.isDarkMode ? 'light-content' : 'dark-content'} />
       <SearchHeader setSearch={setSearch} />
 
       {/* Content list */}
@@ -53,19 +57,21 @@ const News = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: Colors.backgroundColor,
-    flex: 1,
-  },
-  content: {
-    marginHorizontal: 16,
-  },
-  header: {
-    fontSize: 24,
-    marginVertical: 8,
-    fontWeight: '500',
-  },
-});
+const _styles = (colors: ThemeState) =>
+  StyleSheet.create({
+    container: {
+      backgroundColor: colors.backgroundColor,
+      flex: 1,
+    },
+    content: {
+      marginHorizontal: 16,
+    },
+    header: {
+      fontSize: 24,
+      marginVertical: 8,
+      fontWeight: '500',
+      color: colors.text,
+    },
+  });
 
 export default News;
