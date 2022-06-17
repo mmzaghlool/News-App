@@ -16,7 +16,7 @@ import DarkMode from './src/configs/asyncStorage/DarkMode';
 import {useDispatch, useSelector} from 'react-redux';
 import {changeMode} from './src/redux/slices/themeSlice';
 import {RootState} from './src/redux/store';
-import {StatusBar} from 'react-native';
+import {Linking, StatusBar} from 'react-native';
 
 export type RootStackParamList = {
   Feed: undefined;
@@ -53,6 +53,23 @@ const App = () => {
     initializeFRMoment();
     updateLanguage();
   }, [dispatch]);
+
+  useEffect(() => {
+    const openUrl = ({url}: {url: string}) => {
+      console.log('url', url);
+    };
+    const event = Linking.addEventListener('url', openUrl);
+
+    async function getInit() {
+      const initLink = await Linking.getInitialURL();
+      console.log('initLink', initLink);
+    }
+
+    getInit();
+    return () => {
+      Linking.removeSubscription(event);
+    };
+  }, []);
 
   if (loading) {
     return <LoadingIndicator />;

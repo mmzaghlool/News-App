@@ -40,6 +40,16 @@
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
+        <!-- Deep Linking -->
+        <intent-filter>
+          <action android:name="android.intent.action.VIEW" />
+          <category android:name="android.intent.category.DEFAULT" />
+          <category android:name="android.intent.category.BROWSABLE" />
+          <data android:scheme="newsapp" />
+          <data android:scheme="https" android:host="mostafa-mahmoud.com" />
+          <data android:scheme="http" android:host="mostafa-mahmoud.com" />
+        </intent-filter>
+
       </activity>
     </application>
 </manifest>
