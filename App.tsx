@@ -16,6 +16,7 @@ import DarkMode from './src/configs/asyncStorage/DarkMode';
 import {useDispatch, useSelector} from 'react-redux';
 import {changeMode} from './src/redux/slices/themeSlice';
 import {RootState} from './src/redux/store';
+import {StatusBar} from 'react-native';
 
 export type RootStackParamList = {
   Feed: undefined;
@@ -70,6 +71,8 @@ const App = () => {
         },
         dark: colors.isDarkMode,
       }}>
+      <StatusBar backgroundColor={colors.neutral} barStyle={colors.isDarkMode ? 'light-content' : 'dark-content'} />
+
       <Tab.Navigator
         screenOptions={({route}) => ({
           title: route.name === 'News' ? Localization.news : Localization.settings,
